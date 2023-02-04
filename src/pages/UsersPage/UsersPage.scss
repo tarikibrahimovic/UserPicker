@@ -1,0 +1,19 @@
+$backbroundColor: #121213;
+
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: $backbroundColor;
+}
+
+.card{
+    width: 27%;
+    height: 60%;
+    background-color: #fff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
