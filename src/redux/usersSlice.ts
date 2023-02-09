@@ -4,14 +4,16 @@ import type { RootState } from "./store";
 
 interface UsersState {
   loading: boolean;
-  users: unknown[];
+  users: any[];
   error: string | null;
+  gender: string;
 }
 
 const initialState: UsersState = {
   loading: false,
   users: [],
   error: null,
+  gender: "male",
 };
 
 export const usersFetch = createAsyncThunk("users/fetch", async () => {
@@ -24,15 +26,26 @@ export const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    saveUsers: (state, action: PayloadAction<unknown[]>) => {
+    saveUsers: (state, action: PayloadAction<Object[]>) => {
       state.users = action.payload;
-    }
+    },
+    filterUsers: (state, action: PayloadAction<string>) => {
+      state.users = state.users.filter((user:any) => {
+        return user.gender === action.payload;
+      });
+    },
+    setGender: (state, action: PayloadAction<string>) => {
+      state.gender = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
       usersFetch.fulfilled,
-      (state, action: PayloadAction<unknown[]>) => {
-        state.users = action.payload;
+      (state, action: PayloadAction<Object[]>) => {
+        state.users = action.payload.filter((data:any) => {
+          return data.gender === state.gender;
+        });
+        state.loading = false;
       }
     );
     builder.addCase(usersFetch.rejected, (state) => {
@@ -44,7 +57,7 @@ export const usersSlice = createSlice({
   },
 });
 
-export const { saveUsers } = usersSlice.actions;
+export const { saveUsers, filterUsers, setGender } = usersSlice.actions;
 
 export const selectUsers = (state: RootState) => state.users.users;
 

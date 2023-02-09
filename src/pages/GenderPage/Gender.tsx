@@ -1,11 +1,16 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../hooks";
+import { setGender } from "../../redux/usersSlice";
 import "./Gender.scss";
 
 const Gender: FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  
 
   const genderButtonHandler = (e:React.MouseEvent<HTMLButtonElement>) => {
+    dispatch(setGender(e.currentTarget.innerText.toLowerCase()));
     navigate('/users', {
         state: e.currentTarget.innerText
     })
